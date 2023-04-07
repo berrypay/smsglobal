@@ -1,0 +1,46 @@
+{
+  "psi-header.config": {
+    "forceToTop": true,
+    "author": "Sallehuddin Abdul Latif",
+    "initials": "SAL",
+    "authorEmail": "sallehuddin@berrypay.com",
+    "blankLinesAfter": 1,
+    "spacesBetweenYears": false,
+    "license": "MIT",
+    "company": "BerryPay (M) Sdn. Bhd.",
+    "copyrightHolder": "BerryPay (M) Sdn. Bhd.",
+    "creationDateZero": "asIs"
+  },
+  "psi-header.changes-tracking": {
+    "isActive": true,
+    "modAuthor": "Modified By:",
+    "modDate": "Last Modified:",
+    "modDateFormat": "dd/MM/yyyy hh:nn:ss",
+    "include": [],
+    "includeGlob": [],
+    "exclude": ["markdown", "json", "jsonc", "shellscript"],
+    "excludeGlob": ["./**/*/ignoreme.*"],
+    "autoHeader": "autoSave",
+    "enforceHeader": true,
+    "replace": ["Project:", "Filename:"],
+    "updateLicenseVariables": false
+  },
+  "psi-header.templates": [
+    {
+      "language": "*",
+      "template": [
+        "Project: <<projectname>>",
+        "Filename: <<filerelativepath>>",
+        "Created Date: <<filecreated('dddd MMMM Do YYYY HH:mm:ss ZZ')>>",
+        "Author: <<author>> (<<authorEmail>>)",
+        "Company: <<company>>",
+        "--------------------------------------",
+        "Last Modified: <<dateformat('dddd MMMM Do YYYY HH:mm:ss ZZ')>>",
+        "Modified By: <<author>> (<<authorEmail>>)",
+        "--------------------------------------",
+        "Copyright (c) <<year>> <<company>>"
+      ]
+    }
+  ],
+  "cSpell.words": ["macrokiosk", "MSIDN", "MSISDN", "servid", "smsglobal"]
+}
