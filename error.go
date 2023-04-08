@@ -5,7 +5,7 @@
  * Author: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * Company: BerryPay (M) Sdn. Bhd.
  * --------------------------------------
- * Last Modified: Saturday April 8th 2023 13:07:26 +0800
+ * Last Modified: Sunday April 9th 2023 07:40:20 +0800
  * Modified By: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * --------------------------------------
  * Copyright (c) 2023 BerryPay (M) Sdn. Bhd.
@@ -15,6 +15,8 @@ package smsglobal
 
 import (
 	"fmt"
+	"io"
+	"net/http"
 	"strconv"
 )
 
@@ -52,27 +54,15 @@ func NewSmsGlobalError(code string, message string) *SmsGlobalError {
 	}
 }
 
-func NewFailedCallError(statusCode int) *SmsGlobalError {
-	code := strconv.Itoa(statusCode)
+func NewFailedCallError(resp *http.Response) *SmsGlobalError {
+	code := strconv.Itoa(resp.StatusCode)
 	var message string
-	switch statusCode {
-	case 400:
-		message = "request contained invalid or missing data"
-	case 401:
-		message = "authentication failed or the authenticate header was not provided"
-	case 403:
-		message = "user not authorized"
-	case 404:
-		message = "URI does not match any of the recognized resources or resource does not exist"
-	case 405:
-		message = "method ot allowed, make OPTIONS request for allowed methods"
-	case 406:
-		message = "content type not supported"
-	case 415:
-		message = "content-type header not supported"
-	default:
-		message = "unexpected return code"
+
+	bodyBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		message = "error details unavailable due to response body read error"
 	}
+	message = string(bodyBytes)
 
 	return &SmsGlobalError{
 		Code:    code,
