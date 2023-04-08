@@ -5,7 +5,7 @@
  * Author: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * Company: BerryPay (M) Sdn. Bhd.
  * --------------------------------------
- * Last Modified: Friday April 7th 2023 09:36:51 +0800
+ * Last Modified: Friday April 7th 2023 14:52:39 +0800
  * Modified By: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * --------------------------------------
  * Copyright (c) 2023 BerryPay (M) Sdn. Bhd.
@@ -20,5 +20,5 @@ const (
 )
 
 func GetFullPath(api string) string {
-	return Settings.BaseUrl + api
+	return GetBaseUrl() + api
 }

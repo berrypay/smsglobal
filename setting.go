@@ -5,13 +5,15 @@
  * Author: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * Company: BerryPay (M) Sdn. Bhd.
  * --------------------------------------
- * Last Modified: Friday April 7th 2023 09:30:38 +0800
+ * Last Modified: Friday April 7th 2023 14:51:42 +0800
  * Modified By: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * --------------------------------------
  * Copyright (c) 2023 BerryPay (M) Sdn. Bhd.
  */
 
 package smsglobal
+
+import "fmt"
 
 type SmsGlobalCredential struct {
 	MasterUser string `json:"masterUser"`
@@ -21,18 +23,20 @@ type SmsGlobalCredential struct {
 }
 
 type SmsGlobalSettings struct {
-	BaseUrl     string               `json:"baseUrl"`
+	Host        string               `json:"host"`
+	Port        int                  `json:"port"`
+	TLS         bool                 `json:"tls"`
 	Credential  *SmsGlobalCredential `json:"credential"`
 	DefaultFrom string               `json:"defaultFrom"`
-	SmsPath     string               `json:"smsPath"`
-	BalancePath string               `json:"balancePath"`
 }
 
 var Settings *SmsGlobalSettings
 
 func init() {
 	Settings = &SmsGlobalSettings{
-		BaseUrl: "https://api.smsglobal.com",
+		Host: "api.smsglobal.com",
+		Port: 443,
+		TLS:  true,
 		Credential: &SmsGlobalCredential{
 			MasterUser: "TEST000",
 			MasterPass: "",
@@ -51,18 +55,53 @@ func GetCredential() *SmsGlobalCredential {
 	return Settings.Credential
 }
 
+func SetHost(host string) {
+	Settings.Host = host
+}
+
+func GetHost() string {
+	return Settings.Host
+}
+
+func SetTLS(tls bool) {
+	Settings.TLS = tls
+}
+
+func GetTLS() bool {
+	return Settings.TLS
+}
+
+func SetPort(port int) {
+	Settings.Port = port
+}
+
+func GetPort() int {
+	return Settings.Port
+}
+
+func GetBaseUrl() string {
+	baseUrl := "https://api.smsglobal.com"
+	if Settings.TLS {
+		if Settings.Port != 443 {
+			baseUrl = fmt.Sprintf("https://%s:%d", Settings.Host, Settings.Port)
+		} else {
+			baseUrl = fmt.Sprintf("https://%s", Settings.Host)
+		}
+	} else {
+		if Settings.Port != 80 {
+			baseUrl = fmt.Sprintf("http://%s:%d", Settings.Host, Settings.Port)
+		} else {
+			baseUrl = fmt.Sprintf("http://%s", Settings.Host)
+		}
+	}
+
+	return baseUrl
+}
+
 func SetDefaultFrom(from string) {
 	Settings.DefaultFrom = from
 }
 
 func GetDefaultFrom() string {
 	return Settings.DefaultFrom
-}
-
-func SetBaseUrl(baseUrl string) {
-	Settings.BaseUrl = baseUrl
-}
-
-func GetBaseUrl() string {
-	return Settings.BaseUrl
 }
