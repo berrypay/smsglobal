@@ -5,7 +5,7 @@
  * Author: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * Company: BerryPay (M) Sdn. Bhd.
  * --------------------------------------
- * Last Modified: Sunday April 9th 2023 07:40:20 +0800
+ * Last Modified: Sunday April 9th 2023 11:47:26 +0800
  * Modified By: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * --------------------------------------
  * Copyright (c) 2023 BerryPay (M) Sdn. Bhd.
@@ -44,7 +44,7 @@ type SmsGlobalError struct {
 }
 
 func (m *SmsGlobalError) Error() string {
-	return fmt.Sprintf("API Error: %s %s", m.Code, m.Message)
+	return fmt.Sprintf("[%s] %s", m.Code, m.Message)
 }
 
 func NewSmsGlobalError(code string, message string) *SmsGlobalError {
