@@ -5,7 +5,7 @@
  * Author: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * Company: BerryPay (M) Sdn. Bhd.
  * --------------------------------------
- * Last Modified: Sunday April 9th 2023 07:39:57 +0800
+ * Last Modified: Sunday April 9th 2023 11:30:27 +0800
  * Modified By: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * --------------------------------------
  * Copyright (c) 2023 BerryPay (M) Sdn. Bhd.
@@ -36,6 +36,11 @@ func GetAccountBalance(timeout int) (*CreditBalanceResponse, error) {
 			fmt.Printf(ErrorOutputTemplate, err.Error())
 		}
 		return nil, err
+	}
+
+	if os.Getenv("DEBUG") == "true" {
+		fmt.Printf("Request URL: %s\n", req.URL)
+		fmt.Printf("Request URI: %s\n", req.RequestURI)
 	}
 
 	client := &http.Client{}
