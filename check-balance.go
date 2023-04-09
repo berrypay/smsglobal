@@ -5,7 +5,7 @@
  * Author: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * Company: BerryPay (M) Sdn. Bhd.
  * --------------------------------------
- * Last Modified: Sunday April 9th 2023 11:34:31 +0800
+ * Last Modified: Sunday April 9th 2023 14:29:58 +0800
  * Modified By: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * --------------------------------------
  * Copyright (c) 2023 BerryPay (M) Sdn. Bhd.
@@ -50,7 +50,10 @@ func GetAccountBalance(timeout int) (*CreditBalanceResponse, error) {
 	nonce := runegen.GetRandom(7, 32)
 	// as per API documentation, ts must be a Unix timestamp
 	ts := time.Now().Unix()
-	req.Header.Set("Authorization", NewAuthHeader(ts, nonce, req.Method, UserCreditBalanceAPI, ""))
+	setHeader(req, ts, nonce, req.Method, UserCreditBalanceAPI, "")
+	// req.Header.Set(headers.Authorization, NewAuthHeader(ts, nonce, req.Method, UserCreditBalanceAPI, ""))
+	// req.Header.Set(headers.ContentType, "application/json")
+	// req.Header.Set(headers.Accept, "application/json")
 	resp, err := client.Do(req)
 	if err != nil {
 		if os.Getenv("DEBUG") == "true" {
@@ -85,11 +88,12 @@ func decodeAccountBalanceResponse(resp *http.Response) (*CreditBalanceResponse, 
 	err := json.NewDecoder(resp.Body).Decode(&creditBalanceResponse)
 	if err != nil {
 		if os.Getenv("DEBUG") == "true" {
+			fmt.Printf("Observed response: [%d] ", resp.StatusCode)
 			bodyBytes, readErr := io.ReadAll(resp.Body)
-			if err != nil {
-				fmt.Printf("Error reading response body: %s\n", readErr.Error())
+			if readErr != nil {
+				fmt.Printf("Response Body Read Error: %s\n", readErr.Error())
 			} else {
-				fmt.Printf("Response Body: %s\n", string(bodyBytes))
+				fmt.Printf("%s\n", string(bodyBytes))
 			}
 			fmt.Printf(ErrorOutputTemplate, err.Error())
 		}
