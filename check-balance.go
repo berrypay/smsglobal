@@ -5,7 +5,7 @@
  * Author: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * Company: BerryPay (M) Sdn. Bhd.
  * --------------------------------------
- * Last Modified: Sunday April 9th 2023 11:30:27 +0800
+ * Last Modified: Sunday April 9th 2023 11:34:31 +0800
  * Modified By: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * --------------------------------------
  * Copyright (c) 2023 BerryPay (M) Sdn. Bhd.
@@ -39,8 +39,7 @@ func GetAccountBalance(timeout int) (*CreditBalanceResponse, error) {
 	}
 
 	if os.Getenv("DEBUG") == "true" {
-		fmt.Printf("Request URL: %s\n", req.URL)
-		fmt.Printf("Request URI: %s\n", req.RequestURI)
+		fmt.Printf("Fetching account balance by calling API endpoint at: %s\n", req.URL)
 	}
 
 	client := &http.Client{}
@@ -51,7 +50,7 @@ func GetAccountBalance(timeout int) (*CreditBalanceResponse, error) {
 	nonce := runegen.GetRandom(7, 32)
 	// as per API documentation, ts must be a Unix timestamp
 	ts := time.Now().Unix()
-	req.Header.Set("Authorization", NewAuthHeader(ts, nonce, req.Method, req.RequestURI, ""))
+	req.Header.Set("Authorization", NewAuthHeader(ts, nonce, req.Method, UserCreditBalanceAPI, ""))
 	resp, err := client.Do(req)
 	if err != nil {
 		if os.Getenv("DEBUG") == "true" {
