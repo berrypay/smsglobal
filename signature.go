@@ -5,7 +5,7 @@
  * Author: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * Company: BerryPay (M) Sdn. Bhd.
  * --------------------------------------
- * Last Modified: Saturday April 8th 2023 12:43:12 +0800
+ * Last Modified: Sunday April 9th 2023 11:40:28 +0800
  * Modified By: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * --------------------------------------
  * Copyright (c) 2023 BerryPay (M) Sdn. Bhd.
@@ -29,7 +29,7 @@ func GetSignature(ts int64, nonce string, method string, uri string, extraData s
 	sigRaw := fmt.Sprintf(SignatureTemplate, ts, nonce, method, uri, Settings.Host, Settings.Port, extraData)
 
 	if os.Getenv("DEBUG") == "true" {
-		fmt.Printf("Signature input: %s\n", sigRaw)
+		fmt.Printf("Signature input: \n%s", sigRaw)
 	}
 
 	return computeHMAC256(sigRaw, Settings.Credential.ApiSecret)
