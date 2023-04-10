@@ -5,7 +5,7 @@
  * Author: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * Company: BerryPay (M) Sdn. Bhd.
  * --------------------------------------
- * Last Modified: Monday April 10th 2023 14:57:09 +0800
+ * Last Modified: Monday April 10th 2023 15:00:55 +0800
  * Modified By: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * --------------------------------------
  * Copyright (c) 2023 BerryPay (M) Sdn. Bhd.
@@ -37,7 +37,7 @@ func init() {
 		Host: "api.smsglobal.com",
 		Port: 443,
 		TLS:  true,
-		Credential: SmsGlobalCredential{
+		Credential: &SmsGlobalCredential{
 			MasterUser: "TEST000",
 			MasterPass: "",
 			ApiKey:     "A_Super_Secret_Key",
