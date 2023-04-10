@@ -5,7 +5,7 @@
  * Author: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * Company: BerryPay (M) Sdn. Bhd.
  * --------------------------------------
- * Last Modified: Sunday April 9th 2023 14:30:16 +0800
+ * Last Modified: Monday April 10th 2023 09:51:48 +0800
  * Modified By: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * --------------------------------------
  * Copyright (c) 2023 BerryPay (M) Sdn. Bhd.
@@ -39,7 +39,7 @@ type SendSMSRequest struct {
 type SendSMSResponse struct {
 }
 
-func SendSingle(to string, from string, message string, title string, timeout int) (*SendSMSResponse, error) {
+func SendSingle(to string, from string, title string, message string, timeout int) (*SendSMSResponse, error) {
 	payload := SendSMSRequest{
 		Destination: to,
 		Origin:      from,
