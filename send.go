@@ -5,7 +5,7 @@
  * Author: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * Company: BerryPay (M) Sdn. Bhd.
  * --------------------------------------
- * Last Modified: Monday April 10th 2023 12:59:54 +0800
+ * Last Modified: Monday April 10th 2023 13:05:40 +0800
  * Modified By: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * --------------------------------------
  * Copyright (c) 2023 BerryPay (M) Sdn. Bhd.
@@ -133,7 +133,7 @@ func decodeSendSMSResponse(resp *http.Response) (*SmsGlobalSendSMSResponseMessag
 		printDebug(ErrorOutputTemplate, err.Error())
 		return nil, err
 	}
-	printDebug("Observed response: [%d] %s", resp.StatusCode, string(bodyBytes))
+	printDebug("Observed response: [%d] %s\n", resp.StatusCode, string(bodyBytes))
 
 	// Create a bytes.Reader from the byte slice
 	bodyReader := bytes.NewReader(bodyBytes)
