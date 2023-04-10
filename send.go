@@ -5,7 +5,7 @@
  * Author: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * Company: BerryPay (M) Sdn. Bhd.
  * --------------------------------------
- * Last Modified: Monday April 10th 2023 12:45:19 +0800
+ * Last Modified: Monday April 10th 2023 12:59:54 +0800
  * Modified By: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * --------------------------------------
  * Copyright (c) 2023 BerryPay (M) Sdn. Bhd.
@@ -20,6 +20,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/berrypay/runegen"
@@ -41,13 +42,27 @@ type SmsGlobalSendSMSResponse struct {
 }
 
 type SmsGlobalSendSMSResponseMessageItem struct {
-	Id          int64     `json:"id"`
-	OutgoingId  int64     `json:"outgoingId"`
-	Origin      string    `json:"origin"`
-	Destination string    `json:"destination"`
-	Message     string    `json:"message"`
-	Status      string    `json:"status"`
-	DateTime    time.Time `json:"dateTime"`
+	Id          int64             `json:"id"`
+	OutgoingId  int64             `json:"outgoingId"`
+	Origin      string            `json:"origin"`
+	Destination string            `json:"destination"`
+	Message     string            `json:"message"`
+	Status      string            `json:"status"`
+	DateTime    SmsGlobalDateTime `json:"dateTime"`
+}
+
+type SmsGlobalDateTime time.Time
+
+const customTimeLayout = "2006-01-02 15:04:05 -0700"
+
+func (ct *SmsGlobalDateTime) UnmarshalJSON(b []byte) error {
+	s := strings.Trim(string(b), "\"")
+	t, err := time.Parse(customTimeLayout, s)
+	if err != nil {
+		return err
+	}
+	*ct = SmsGlobalDateTime(t)
+	return nil
 }
 
 func SendSingle(to string, from string, title string, message string, timeout int) (*SmsGlobalSendSMSResponseMessageItem, error) {
