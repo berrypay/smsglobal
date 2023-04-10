@@ -5,7 +5,7 @@
  * Author: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * Company: BerryPay (M) Sdn. Bhd.
  * --------------------------------------
- * Last Modified: Sunday April 9th 2023 11:15:51 +0800
+ * Last Modified: Monday April 10th 2023 14:57:09 +0800
  * Modified By: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * --------------------------------------
  * Copyright (c) 2023 BerryPay (M) Sdn. Bhd.
@@ -23,11 +23,11 @@ type SmsGlobalCredential struct {
 }
 
 type SmsGlobalSettings struct {
-	Host        string              `json:"host"`
-	Port        int                 `json:"port"`
-	TLS         bool                `json:"tls"`
-	Credential  SmsGlobalCredential `json:"credential"`
-	DefaultFrom string              `json:"defaultFrom"`
+	Host        string               `json:"host"`
+	Port        int                  `json:"port"`
+	TLS         bool                 `json:"tls"`
+	Credential  *SmsGlobalCredential `json:"credential"`
+	DefaultFrom string               `json:"defaultFrom"`
 }
 
 var Settings *SmsGlobalSettings
@@ -47,11 +47,11 @@ func init() {
 	}
 }
 
-func SetCredential(credential SmsGlobalCredential) {
+func SetCredential(credential *SmsGlobalCredential) {
 	Settings.Credential = credential
 }
 
-func GetCredential() SmsGlobalCredential {
+func GetCredential() *SmsGlobalCredential {
 	return Settings.Credential
 }
 
