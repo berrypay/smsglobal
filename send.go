@@ -5,7 +5,7 @@
  * Author: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * Company: BerryPay (M) Sdn. Bhd.
  * --------------------------------------
- * Last Modified: Monday April 10th 2023 12:02:29 +0800
+ * Last Modified: Monday April 10th 2023 12:45:19 +0800
  * Modified By: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * --------------------------------------
  * Copyright (c) 2023 BerryPay (M) Sdn. Bhd.
@@ -113,21 +113,21 @@ func SendSingle(to string, from string, title string, message string, timeout in
 
 func decodeSendSMSResponse(resp *http.Response) (*SmsGlobalSendSMSResponseMessageItem, error) {
 	// TODO: implement decodeSendSMSResponse decoding
-	if os.Getenv("DEBUG") == "true" {
-		fmt.Printf("Observed response: [%d] ", resp.StatusCode)
-		bodyBytes, err := io.ReadAll(resp.Body)
-		if err != nil {
-			fmt.Printf("Response Body Read Error: %s\n", err.Error())
-		} else {
-			fmt.Printf("%s\n", string(bodyBytes))
-		}
-	}
-
-	var sendSmsResponse SmsGlobalSendSMSResponse
-	err := json.NewDecoder(resp.Body).Decode(&sendSmsResponse)
+	bodyBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		printDebug(ErrorOutputTemplate, err.Error())
 		return nil, err
+	}
+	printDebug("Observed response: [%d] %s", resp.StatusCode, string(bodyBytes))
+
+	// Create a bytes.Reader from the byte slice
+	bodyReader := bytes.NewReader(bodyBytes)
+
+	var sendSmsResponse SmsGlobalSendSMSResponse
+	jsonDecodeErr := json.NewDecoder(bodyReader).Decode(&sendSmsResponse)
+	if jsonDecodeErr != nil {
+		printDebug(ErrorOutputTemplate, jsonDecodeErr.Error())
+		return nil, jsonDecodeErr
 	}
 
 	// check sanity of response
@@ -135,8 +135,6 @@ func decodeSendSMSResponse(resp *http.Response) (*SmsGlobalSendSMSResponseMessag
 		return nil, NewSmsGlobalPayloadDecodeError("No result returned")
 	}
 
-	// TODO: better checking of response. Response may return more that 1 result which it should not.
-	// For now just assume taking the first result
-
+	// TODO: better checking of response. Response may return more that 1 result which it should not. For now just assume taking the first result
 	return &sendSmsResponse.Messages[0], nil
 }
