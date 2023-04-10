@@ -5,7 +5,7 @@
  * Author: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * Company: BerryPay (M) Sdn. Bhd.
  * --------------------------------------
- * Last Modified: Monday April 10th 2023 10:30:34 +0800
+ * Last Modified: Monday April 10th 2023 11:59:33 +0800
  * Modified By: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * --------------------------------------
  * Copyright (c) 2023 BerryPay (M) Sdn. Bhd.
@@ -25,7 +25,7 @@ import (
 	"github.com/berrypay/runegen"
 )
 
-type SendSMSRequest struct {
+type SmsGlobalSendSMSRequest struct {
 	Destination       string     `json:"destination,omitempty"`
 	Message           string     `json:"message,omitempty"`
 	Origin            string     `json:"origin,omitempty"`
@@ -36,11 +36,22 @@ type SendSMSRequest struct {
 	IncomingUrl       string     `json:"incomingUrl,omitempty"`
 	ExpiryDateTime    *time.Time `json:"expiryDateTime,omitempty"`
 }
-type SendSMSResponse struct {
+type SmsGlobalSendSMSResponse struct {
+	Messages []SmsGlobalSendSMSResponseMessageItem `json:"messages"`
 }
 
-func SendSingle(to string, from string, title string, message string, timeout int) (*SendSMSResponse, error) {
-	payload := SendSMSRequest{
+type SmsGlobalSendSMSResponseMessageItem struct {
+	Id          int64     `json:"id"`
+	OutgoingId  int64     `json:"outgoingId"`
+	Origin      string    `json:"origin"`
+	Destination string    `json:"destination"`
+	Message     string    `json:"message"`
+	Status      string    `json:"status"`
+	DateTime    time.Time `json:"dateTime"`
+}
+
+func SendSingle(to string, from string, title string, message string, timeout int) (*SmsGlobalSendSMSResponseMessageItem, error) {
+	payload := SmsGlobalSendSMSRequest{
 		Destination: to,
 		Origin:      from,
 	}
@@ -100,7 +111,7 @@ func SendSingle(to string, from string, title string, message string, timeout in
 	return retVal, nil
 }
 
-func decodeSendSMSResponse(resp *http.Response) (*SendSMSResponse, error) {
+func decodeSendSMSResponse(resp *http.Response) (*SmsGlobalSendSMSResponseMessageItem, error) {
 	// TODO: implement decodeSendSMSResponse decoding
 	if os.Getenv("DEBUG") == "true" {
 		fmt.Printf("Observed response: [%d] ", resp.StatusCode)
@@ -112,5 +123,20 @@ func decodeSendSMSResponse(resp *http.Response) (*SendSMSResponse, error) {
 		}
 	}
 
-	return nil, nil
+	var sendSmsResponse *SmsGlobalSendSMSResponse
+	err := json.NewDecoder(resp.Body).Decode(sendSmsResponse)
+	if err != nil {
+		printDebug(ErrorOutputTemplate, err.Error())
+		return nil, err
+	}
+
+	// check sanity of response
+	if len(sendSmsResponse.Messages) < 1 {
+		return nil, NewSmsGlobalPayloadDecodeError("No result returned")
+	}
+
+	// TODO: better checking of response. Response may return more that 1 result which it should not.
+	// For now just assume taking the first result
+
+	return &sendSmsResponse.Messages[0], nil
 }

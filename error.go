@@ -5,7 +5,7 @@
  * Author: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * Company: BerryPay (M) Sdn. Bhd.
  * --------------------------------------
- * Last Modified: Sunday April 9th 2023 11:47:26 +0800
+ * Last Modified: Monday April 10th 2023 11:53:45 +0800
  * Modified By: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * --------------------------------------
  * Copyright (c) 2023 BerryPay (M) Sdn. Bhd.
@@ -21,7 +21,8 @@ import (
 )
 
 const (
-	ErrorOutputTemplate string = "Error: %s\n"
+	ErrorOutputTemplate   string = "Error: %s\n"
+	WarningOutputTemplate string = "Warning: %s\n"
 )
 
 type SmsGlobalPayloadDecodeError struct {
