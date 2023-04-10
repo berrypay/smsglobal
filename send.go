@@ -5,7 +5,7 @@
  * Author: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * Company: BerryPay (M) Sdn. Bhd.
  * --------------------------------------
- * Last Modified: Monday April 10th 2023 10:10:45 +0800
+ * Last Modified: Monday April 10th 2023 10:21:14 +0800
  * Modified By: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * --------------------------------------
  * Copyright (c) 2023 BerryPay (M) Sdn. Bhd.
@@ -47,9 +47,7 @@ func SendSingle(to string, from string, title string, message string, timeout in
 	payload.Message = fmt.Sprintf("%s: %s", title, message)
 	payloadByteArray, err := json.Marshal(payload)
 	if err != nil {
-		if os.Getenv("DEBUG") == "true" {
-			fmt.Printf(ErrorOutputTemplate, err.Error())
-		}
+		printDebug(ErrorOutputTemplate, err.Error())
 		return nil, err
 	}
 
@@ -60,14 +58,12 @@ func SendSingle(to string, from string, title string, message string, timeout in
 	body := bytes.NewBuffer(payloadByteArray)
 	req, err := http.NewRequest("POST", GetFullPath(SmsAPI), body)
 	if err != nil {
-		if os.Getenv("DEBUG") == "true" {
-			fmt.Printf(ErrorOutputTemplate, err.Error())
-		}
+		printDebug(ErrorOutputTemplate, err.Error())
 		return nil, err
 	}
 
 	if os.Getenv("DEBUG") == "true" {
-		fmt.Printf("Sending sms by calling API endpoint at: %s\n", req.URL)
+		printDebug("Sending sms by calling API endpoint at: %s\n", req.URL)
 	}
 
 	client := &http.Client{}
@@ -81,18 +77,14 @@ func SendSingle(to string, from string, title string, message string, timeout in
 	setHeader(req, ts, nonce, req.Method, SmsAPI, "")
 	resp, err := client.Do(req)
 	if err != nil {
-		if os.Getenv("DEBUG") == "true" {
-			fmt.Printf(ErrorOutputTemplate, err.Error())
-		}
+		printDebug(ErrorOutputTemplate, err.Error())
 		return nil, err
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
 		retErr := NewFailedCallError(resp)
-		if os.Getenv("DEBUG") == "true" {
-			fmt.Printf(ErrorOutputTemplate, retErr.Error())
-		}
+		printDebug(ErrorOutputTemplate, retErr.Error())
 
 		return nil, retErr
 	}
