@@ -5,7 +5,7 @@
  * Author: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * Company: BerryPay (M) Sdn. Bhd.
  * --------------------------------------
- * Last Modified: Monday April 10th 2023 10:21:14 +0800
+ * Last Modified: Monday April 10th 2023 10:30:34 +0800
  * Modified By: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * --------------------------------------
  * Copyright (c) 2023 BerryPay (M) Sdn. Bhd.
@@ -26,15 +26,15 @@ import (
 )
 
 type SendSMSRequest struct {
-	Destination       string    `json:"destination,omitempty"`
-	Message           string    `json:"message,omitempty"`
-	Origin            string    `json:"origin,omitempty"`
-	ScheduledDateTime time.Time `json:"scheduledDateTime,omitempty"`
-	Campaign          string    `json:"campaign,omitempty"`
-	SharedPool        string    `json:"sharedPool,omitempty"`
-	NotifyUrl         string    `json:"notifyUrl,omitempty"`
-	IncomingUrl       string    `json:"incomingUrl,omitempty"`
-	ExpiryDateTime    time.Time `json:"expiryDateTime,omitempty"`
+	Destination       string     `json:"destination,omitempty"`
+	Message           string     `json:"message,omitempty"`
+	Origin            string     `json:"origin,omitempty"`
+	ScheduledDateTime *time.Time `json:"scheduledDateTime,omitempty"`
+	Campaign          string     `json:"campaign,omitempty"`
+	SharedPool        string     `json:"sharedPool,omitempty"`
+	NotifyUrl         string     `json:"notifyUrl,omitempty"`
+	IncomingUrl       string     `json:"incomingUrl,omitempty"`
+	ExpiryDateTime    *time.Time `json:"expiryDateTime,omitempty"`
 }
 type SendSMSResponse struct {
 }
