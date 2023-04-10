@@ -5,7 +5,7 @@
  * Author: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * Company: BerryPay (M) Sdn. Bhd.
  * --------------------------------------
- * Last Modified: Monday April 10th 2023 11:59:33 +0800
+ * Last Modified: Monday April 10th 2023 12:02:29 +0800
  * Modified By: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * --------------------------------------
  * Copyright (c) 2023 BerryPay (M) Sdn. Bhd.
@@ -123,8 +123,8 @@ func decodeSendSMSResponse(resp *http.Response) (*SmsGlobalSendSMSResponseMessag
 		}
 	}
 
-	var sendSmsResponse *SmsGlobalSendSMSResponse
-	err := json.NewDecoder(resp.Body).Decode(sendSmsResponse)
+	var sendSmsResponse SmsGlobalSendSMSResponse
+	err := json.NewDecoder(resp.Body).Decode(&sendSmsResponse)
 	if err != nil {
 		printDebug(ErrorOutputTemplate, err.Error())
 		return nil, err
