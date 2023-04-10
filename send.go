@@ -5,7 +5,7 @@
  * Author: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * Company: BerryPay (M) Sdn. Bhd.
  * --------------------------------------
- * Last Modified: Monday April 10th 2023 09:51:48 +0800
+ * Last Modified: Monday April 10th 2023 10:10:45 +0800
  * Modified By: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * --------------------------------------
  * Copyright (c) 2023 BerryPay (M) Sdn. Bhd.
@@ -51,6 +51,10 @@ func SendSingle(to string, from string, title string, message string, timeout in
 			fmt.Printf(ErrorOutputTemplate, err.Error())
 		}
 		return nil, err
+	}
+
+	if os.Getenv("DEBUG") == "true" {
+		fmt.Printf("Send Payload: %s\n", string(payloadByteArray))
 	}
 
 	body := bytes.NewBuffer(payloadByteArray)
