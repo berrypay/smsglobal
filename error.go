@@ -5,7 +5,7 @@
  * Author: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * Company: BerryPay (M) Sdn. Bhd.
  * --------------------------------------
- * Last Modified: Monday April 10th 2023 11:53:45 +0800
+ * Last Modified: Tuesday April 11th 2023 10:15:54 +0800
  * Modified By: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * --------------------------------------
  * Copyright (c) 2023 BerryPay (M) Sdn. Bhd.
@@ -17,7 +17,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"strconv"
 )
 
 const (
@@ -40,15 +39,15 @@ func NewSmsGlobalPayloadDecodeError(message string) *SmsGlobalPayloadDecodeError
 }
 
 type SmsGlobalError struct {
-	Code    string
+	Code    int
 	Message string
 }
 
 func (m *SmsGlobalError) Error() string {
-	return fmt.Sprintf("[%s] %s", m.Code, m.Message)
+	return fmt.Sprintf("[%d] %s", m.Code, m.Message)
 }
 
-func NewSmsGlobalError(code string, message string) *SmsGlobalError {
+func NewSmsGlobalError(code int, message string) *SmsGlobalError {
 	return &SmsGlobalError{
 		Code:    code,
 		Message: message,
@@ -56,7 +55,7 @@ func NewSmsGlobalError(code string, message string) *SmsGlobalError {
 }
 
 func NewFailedCallError(resp *http.Response) *SmsGlobalError {
-	code := strconv.Itoa(resp.StatusCode)
+	code := resp.StatusCode
 	var message string
 
 	bodyBytes, err := io.ReadAll(resp.Body)
