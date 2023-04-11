@@ -5,7 +5,7 @@
  * Author: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * Company: BerryPay (M) Sdn. Bhd.
  * --------------------------------------
- * Last Modified: Monday April 10th 2023 13:05:40 +0800
+ * Last Modified: Tuesday April 11th 2023 12:19:32 +0800
  * Modified By: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * --------------------------------------
  * Copyright (c) 2023 BerryPay (M) Sdn. Bhd.
@@ -151,5 +151,6 @@ func decodeSendSMSResponse(resp *http.Response) (*SmsGlobalSendSMSResponseMessag
 	}
 
 	// TODO: better checking of response. Response may return more that 1 result which it should not. For now just assume taking the first result
+	printDebug("Sending Response: %+v\n", sendSmsResponse.Messages[0])
 	return &sendSmsResponse.Messages[0], nil
 }
